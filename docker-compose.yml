@@ -1,0 +1,40 @@
+services:
+  root:
+    container_name: root
+    image: mcr.microsoft.com/devcontainers/base:noble
+    volumes:
+      - .:/workspace:rw
+      - ./builder:/workspace/builder:ro
+      - ./langchain-ai-docs:/workspace/langchain-ai-docs:ro
+    user: vscode
+    working_dir: /workspace
+    command: sleep infinity
+
+
+  builder:
+    container_name: builder
+    build: ./builder/.devcontainer
+    volumes:
+      - ./builder:/app
+    user: vscode
+    working_dir: /app
+    command: sleep infinity
+    networks:
+      - network
+
+  langchain-ai-docs:
+    container_name: langchain-ai-docs
+    build: ./langchain-ai-docs/.devcontainer
+    volumes:
+      - ./langchain-ai-docs:/app
+    user: vscode
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    command: sleep infinity
+    networks:
+      - network
+
+networks:
+  network:
+    driver: bridge

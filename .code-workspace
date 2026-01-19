@@ -1,0 +1,10 @@
+{
+    "folders": [
+        {
+            "path": "builder"
+        },
+        {
+            "path": "langchain-ai-docs"
+        }
+    ]
+}

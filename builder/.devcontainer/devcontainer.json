@@ -1,0 +1,21 @@
+{
+	"name": "builder",
+	"dockerComposeFile": "${localWorkspaceFolder}/../docker-compose.yml",
+	"service": "builder",
+	"workspaceFolder": "/app",
+	"features": {},
+	"forwardPorts": [],
+	"postCreateCommand": "",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-python.python",
+				"njpwerner.autodocstring",
+				"ms-python.black-formatter"
+			]
+		}
+	},
+	"runServices": [
+		"builder"
+	]
+}

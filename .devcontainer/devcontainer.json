@@ -1,0 +1,17 @@
+{
+	"name": "root",
+	"dockerComposeFile": "${localWorkspaceFolder}/docker-compose.yml",
+	"service": "root",
+	"workspaceFolder": "/workspace",
+	"features": {},
+	"forwardPorts": [],
+	"postCreateCommand": "",
+	"customizations": {
+		"vscode": {
+			"extensions": []
+		}
+	},
+	"runServices": [
+		"root"
+	]
+}
