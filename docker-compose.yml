@@ -21,6 +21,8 @@ services:
     command: sleep infinity
     networks:
       - network
+    environment:
+      - LANGCHAIN_AI_DOCS_URL=http://langchain-ai-docs:3000
 
   langchain-ai-docs:
     container_name: langchain-ai-docs

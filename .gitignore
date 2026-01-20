@@ -1,3 +1,6 @@
 .venv
+__pycache__
+
+/builder/documents.jsonl
 
 /langchain-ai-docs/docs
