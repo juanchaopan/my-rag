@@ -9,7 +9,8 @@ services:
     user: vscode
     working_dir: /workspace
     command: sleep infinity
-
+    networks:
+      - network
 
   builder:
     container_name: builder
@@ -21,8 +22,14 @@ services:
     command: sleep infinity
     networks:
       - network
+    depends_on:
+      langchain-ai-docs:
+        condition: service_healthy
+      ollama:
+        condition: service_healthy
     environment:
       - LANGCHAIN_AI_DOCS_URL=http://langchain-ai-docs:3000
+      - OLLAMA_HOST=http://ollama:11434
 
   langchain-ai-docs:
     container_name: langchain-ai-docs
@@ -36,7 +43,31 @@ services:
     command: sleep infinity
     networks:
       - network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://langchain-ai-docs:3000"]
+      interval: 1s
+      timeout: 1s
+      retries: 3600
+
+  ollama:
+    container_name: ollama
+    image: ollama/ollama
+    volumes:
+      - ollama_data:/root/.ollama
+    ports:
+      - "11434:11434"
+    networks:
+      - network
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 1s
+      timeout: 1s
+      retries: 300
+    runtime: nvidia
 
 networks:
   network:
     driver: bridge
+
+volumes:
+  ollama_data:

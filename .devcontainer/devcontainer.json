@@ -3,12 +3,18 @@
 	"dockerComposeFile": "${localWorkspaceFolder}/docker-compose.yml",
 	"service": "root",
 	"workspaceFolder": "/workspace",
-	"features": {},
+	"features": {
+		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+	},
 	"forwardPorts": [],
 	"postCreateCommand": "",
 	"customizations": {
 		"vscode": {
-			"extensions": []
+			"extensions": [
+				"redhat.vscode-yaml",
+				"foxundermoon.shell-format",
+				"wwnao.bat-formatter"
+			]
 		}
 	},
 	"runServices": [

@@ -1,6 +1,13 @@
 {
     "configurations": [
         {
+            "name": "Debug Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        },
+        {
             "name": "Debug Scrapy (launch)",
             "type": "debugpy",
             "request": "launch",
