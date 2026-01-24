@@ -8,7 +8,14 @@
             "console": "integratedTerminal"
         },
         {
-            "name": "Debug Scrapy (launch)",
+            "name": "Debug Build Index",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/build_index.py",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Debug Scrapy",
             "type": "debugpy",
             "request": "launch",
             "module": "scrapy",

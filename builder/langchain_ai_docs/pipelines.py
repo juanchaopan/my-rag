@@ -12,7 +12,7 @@ from jsonlines import open
 class LangchainAiDocsPipeline:
 
     def open_spider(self, spider):
-        self.writer = open("documents.jsonl", "w")
+        self.writer = open("langchain-ai-docs.jsonl", "w")
 
     def process_item(self, item, spider):
         adapter = ItemAdapter(item)
