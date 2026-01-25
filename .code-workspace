@@ -3,6 +3,9 @@
         {
             "path": "builder"
         },
+		{
+            "path": "query"
+		},
         {
             "path": "langchain-ai-docs"
         }

@@ -36,6 +36,27 @@ services:
       - CHROMA_SSL=false
       - OLLAMA_URL=http://ollama:11434
 
+  query:
+    container_name: query
+    build: ./query/.devcontainer
+    volumes:
+      - ./query:/app
+    user: vscode
+    working_dir: /app
+    command: sleep infinity
+    networks:
+      - network
+    depends_on:
+      chroma:
+        condition: service_healthy
+      ollama:
+        condition: service_healthy
+    environment:
+      - CHROMA_HOST=chroma
+      - CHROMA_PORT=8000
+      - CHROMA_SSL=false
+      - OLLAMA_URL=http://ollama:11434
+
   langchain-ai-docs:
     container_name: langchain-ai-docs
     build: ./langchain-ai-docs/.devcontainer
