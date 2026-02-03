@@ -1,4 +1,18 @@
+
+# Python
 .venv
 __pycache__
 
+# Node.js
+node_modules
+
+# CDK
+cdk.out
+
+# Next.js
+next-env.d.ts
+.next
+
 /langchain-ai-docs/docs
+
+

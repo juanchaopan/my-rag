@@ -28,6 +28,20 @@ services:
       - NVIDIA_API_KEY=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
       - EMBEDDING_MODEL=nvidia/llama-3.2-nv-embedqa-1b-v2
 
+  front:
+    container_name: front
+    image: mcr.microsoft.com/devcontainers/typescript-node:bookworm
+    volumes:
+      - ./front:/app
+    user: node
+    working_dir: /app
+    command: sleep infinity
+    networks:
+      - network
+    depends_on:
+      chat:
+        condition: service_started
+
   chat:
     container_name: chat
     build: ./chat/.devcontainer

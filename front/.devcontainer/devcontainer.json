@@ -1,0 +1,19 @@
+{
+	"name": "front",
+	"dockerComposeFile": "${localWorkspaceFolder}/../docker-compose.yml",
+	"service": "front",
+	"workspaceFolder": "/app",
+	"features": {},
+	"forwardPorts": [],
+	"postCreateCommand": "",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"dbaeumer.vscode-eslint"
+			]
+		}
+	},
+	"runServices": [
+		"front"
+	]
+}

@@ -4,6 +4,9 @@
             "path": "builder"
         },
 		{
+            "path": "front"
+		},
+		{
             "path": "chat"
 		},
         {
