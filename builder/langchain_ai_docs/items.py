@@ -10,4 +10,3 @@ class LangchainAiDocsItem(scrapy.Item):
     # define the fields for your item here like:
     id = scrapy.Field()
     content = scrapy.Field()
-    pass

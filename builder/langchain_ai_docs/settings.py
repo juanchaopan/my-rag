@@ -89,4 +89,5 @@ ITEM_PIPELINES = {
 # Set settings whose default value is deprecated to a future-proof value
 FEED_EXPORT_ENCODING = "utf-8"
 
-LANGCHAIN_AI_DOCS_URL = getenv("LANGCHAIN_AI_DOCS_URL", "")
+LANGCHAIN_AI_DOCS_URL = getenv("LANGCHAIN_AI_DOCS_URL")
+OLLAMA_URL = getenv("OLLAMA_URL")

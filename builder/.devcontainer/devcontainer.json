@@ -5,8 +5,7 @@
 	"workspaceFolder": "/app",
 	"features": {},
 	"forwardPorts": [],
-	"postCreateCommand": "/app/pull.sh",
-	"postStartCommand": "/app/run.sh",
+	"postCreateCommand": "",
 	"customizations": {
 		"vscode": {
 			"extensions": [

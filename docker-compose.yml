@@ -4,8 +4,6 @@ services:
     image: mcr.microsoft.com/devcontainers/base:noble
     volumes:
       - .:/workspace:rw
-      - ./builder:/workspace/builder:ro
-      - ./langchain-ai-docs:/workspace/langchain-ai-docs:ro
     user: vscode
     working_dir: /workspace
     command: sleep infinity
@@ -24,38 +22,29 @@ services:
       - network
     depends_on:
       langchain-ai-docs:
-        condition: service_healthy
-      chroma:
-        condition: service_healthy
-      ollama:
-        condition: service_healthy
+        condition: service_started
     environment:
       - LANGCHAIN_AI_DOCS_URL=http://langchain-ai-docs:3000
-      - CHROMA_HOST=chroma
-      - CHROMA_PORT=8000
-      - CHROMA_SSL=false
-      - OLLAMA_URL=http://ollama:11434
+      - NVIDIA_API_KEY=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
+      - EMBEDDING_MODEL=nvidia/llama-3.2-nv-embedqa-1b-v2
 
-  query:
-    container_name: query
-    build: ./query/.devcontainer
+  chat:
+    container_name: chat
+    build: ./chat/.devcontainer
     volumes:
-      - ./query:/app
+      - ./chat:/app
+      - ./builder/chroma_db:/app/chroma_db
     user: vscode
     working_dir: /app
+    ports:
+      - "8080:8080"
     command: sleep infinity
     networks:
       - network
-    depends_on:
-      chroma:
-        condition: service_healthy
-      ollama:
-        condition: service_healthy
     environment:
-      - CHROMA_HOST=chroma
-      - CHROMA_PORT=8000
-      - CHROMA_SSL=false
-      - OLLAMA_URL=http://ollama:11434
+      - NVIDIA_API_KEY=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
+      - EMBEDDING_MODEL=nvidia/llama-3.2-nv-embedqa-1b-v2
+      - LLM_MODEL=meta/llama-3.1-405b-instruct
 
   langchain-ai-docs:
     container_name: langchain-ai-docs
@@ -75,41 +64,32 @@ services:
       timeout: 1s
       retries: 3600
 
-  chroma:
-    container_name: chroma
-    image: chromadb/chroma
+  deploy:
+    container_name: deploy
+    build: ./deploy/.devcontainer
     volumes:
-      - chroma_data:/data
-    ports:
-      - "8000:8000"
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./deploy:/app
+      - ./builder:/app/builder:ro
+      - ./chat:/app/chat:ro
+    user: node
+    working_dir: /app
+    command: sleep infinity
     networks:
       - network
-    healthcheck:
-      test: ["CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/chroma/8000'"]
-      interval: 1s
-      timeout: 1s
-      retries: 3600
+    environment:
+      - CDK_DEFAULT_ACCOUNT=701527495785
+      - CDK_DEFAULT_REGION=us-east-1
+      - NVIDIA_API_KEY=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
+      - EMBEDDING_MODEL=nvidia/llama-3.2-nv-embedqa-1b-v2
+      - LLM_MODEL=meta/llama-3.1-405b-instruct
 
-  ollama:
-    container_name: ollama
-    image: ollama/ollama
-    volumes:
-      - ollama_data:/root/.ollama
-    ports:
-      - "11434:11434"
-    networks:
-      - network
-    healthcheck:
-      test: ["CMD", "ollama", "list"]
-      interval: 1s
-      timeout: 1s
-      retries: 3600
-    runtime: nvidia
 
 networks:
   network:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
+          gateway: 172.20.0.1
 
-volumes:
-  chroma_data:
-  ollama_data:

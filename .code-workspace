@@ -4,10 +4,13 @@
             "path": "builder"
         },
 		{
-            "path": "query"
+            "path": "chat"
 		},
         {
             "path": "langchain-ai-docs"
+        },
+        {
+            "path": "deploy"
         }
     ]
 }

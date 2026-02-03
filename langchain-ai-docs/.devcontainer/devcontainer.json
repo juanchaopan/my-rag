@@ -5,8 +5,8 @@
 	"workspaceFolder": "/app",
 	"features": {},
 	"forwardPorts": [],
-	"postCreateCommand": "/app/build.sh",
-	"postStartCommand": "/app/start.sh",
+	"postCreateCommand": "",
+	"postStartCommand": "",
 	"customizations": {
 		"vscode": {
 			"extensions": []

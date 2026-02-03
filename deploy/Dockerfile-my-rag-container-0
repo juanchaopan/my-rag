@@ -1,0 +1,41 @@
+FROM python:3.10-slim AS builder
+
+# Create a virtual environment /opt/venv
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+RUN pip install --upgrade pip poetry poetry-plugin-export
+
+# Install dependencies to /opt/venv
+WORKDIR /app
+COPY chat/pyproject.toml ./
+RUN poetry lock \
+  && poetry export -f requirements.txt --without-hashes -o requirements.txt \
+  && pip install -r requirements.txt
+
+
+FROM python:3.10-slim AS runtime
+
+# Install tools
+RUN apt-get update && \
+  apt-get install -y curl && \
+  rm -rf /var/lib/apt/lists/*
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1 \
+  PYTHONUNBUFFERED=1
+
+# Switch to a non-root user
+RUN useradd -m -u 1000 appuser
+USER appuser
+
+# Copy dependencies and application code
+WORKDIR /app
+COPY --chown=appuser:appuser --from=builder /opt/venv /opt/venv
+COPY --chown=appuser:appuser chat/main.py main.py
+COPY --chown=appuser:appuser builder/chroma_db chroma_db
+
+# Start the application
+EXPOSE 8000
+ENV PATH="/opt/venv/bin:$PATH"
+ENV PYTHONPATH="/app"
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
