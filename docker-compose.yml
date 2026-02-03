@@ -35,6 +35,8 @@ services:
       - ./front:/app
     user: node
     working_dir: /app
+    ports:
+      - "3001:3000"
     command: sleep infinity
     networks:
       - network
