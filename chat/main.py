@@ -4,6 +4,7 @@ from chromadb import PersistentClient
 from chromadb.config import Settings as ChromaSettings
 from fastapi import FastAPI, Body
 from fastapi.responses import StreamingResponse
+from fastapi.middleware.cors import CORSMiddleware
 from llama_index.core import VectorStoreIndex, StorageContext
 from llama_index.llms.nvidia import NVIDIA
 from llama_index.embeddings.nvidia import NVIDIAEmbedding
@@ -38,6 +39,13 @@ def init_chat_engine():
 
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 chat_engine = init_chat_engine()
 

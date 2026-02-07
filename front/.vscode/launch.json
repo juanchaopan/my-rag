@@ -12,7 +12,10 @@
         "dev"
       ],
       "console": "integratedTerminal",
-      "autoAttachChildProcesses": true
+      "autoAttachChildProcesses": true,
+      "env": {
+        "CHAT_API": "http://chat:8000",
+      }
     }
   ]
 }

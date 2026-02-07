@@ -40,6 +40,10 @@ services:
     command: sleep infinity
     networks:
       - network
+    environment:
+      - WATCHPACK_POLLING=true
+      - WATCHPACK_POLLING_INTERVAL=1000
+      - CHAT_URL=http://localhost:8000
     depends_on:
       chat:
         condition: service_started
@@ -53,7 +57,7 @@ services:
     user: vscode
     working_dir: /app
     ports:
-      - "8080:8080"
+      - "8000:8000"
     command: sleep infinity
     networks:
       - network
@@ -100,7 +104,6 @@ services:
       - EMBEDDING_MODEL=nvidia/llama-3.2-nv-embedqa-1b-v2
       - LLM_MODEL=meta/llama-3.1-405b-instruct
 
-
 networks:
   network:
     driver: bridge
@@ -108,4 +111,3 @@ networks:
       config:
         - subnet: 172.20.0.0/24
           gateway: 172.20.0.1
-
