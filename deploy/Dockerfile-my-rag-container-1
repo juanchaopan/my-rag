@@ -1,0 +1,38 @@
+FROM node:18-alpine AS builder
+
+ARG CHAT_URL
+
+# Copy application code
+WORKDIR /app
+COPY front/app/ ./app/
+COPY front/components/ ./components/
+COPY front/hooks/ ./hooks/
+COPY front/stores/ ./stores/
+COPY front/types/ ./types/
+COPY front/package.json ./
+COPY front/tsconfig.json ./
+COPY front/next.config.ts ./
+COPY front/postcss.config.mjs ./
+
+# Build the application
+ENV CHAT_URL=${CHAT_URL}
+RUN npm install \
+    && npm run build
+
+
+FROM node:18-alpine AS runtime
+
+# Switch to a non-root user
+RUN adduser -D -u 1001 appuser
+USER appuser
+
+# Copy built application, package.json, and public assets
+WORKDIR /app
+COPY --chown=appuser:appuser --from=builder /app/.next/standalone ./standalone/
+COPY --chown=appuser:appuser --from=builder /app/.next/static ./standalone/.next/static/
+COPY --chown=appuser:appuser --from=builder /app/package.json ./package.json
+COPY --chown=appuser:appuser front/public/ ./standalone/public/
+
+# Start the application
+EXPOSE 3000
+CMD ["node", "standalone/server.js"]

@@ -30,9 +30,9 @@ USER appuser
 
 # Copy dependencies and application code
 WORKDIR /app
-COPY --chown=appuser:appuser --from=builder /opt/venv /opt/venv
-COPY --chown=appuser:appuser chat/main.py main.py
-COPY --chown=appuser:appuser builder/chroma_db chroma_db
+COPY --chown=appuser:appuser --from=builder /opt/venv/ /opt/venv/
+COPY --chown=appuser:appuser chat/main.py ./
+COPY --chown=appuser:appuser builder/chroma_db ./
 
 # Start the application
 EXPOSE 8000
